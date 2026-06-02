@@ -24,7 +24,7 @@ st.set_page_config(
 # SESSION STATE
 # ------------------------------------------------------------
 defaults = {
-    'dark_mode': True,
+    'dark_mode': False,
     'kapasitas': 100,
     'tipe_inti': 'CRGO',
     'nl_loss': 129,
@@ -37,28 +37,28 @@ for k, v in defaults.items():
         st.session_state[k] = v
 
 # ------------------------------------------------------------
-# TEMA
+# TEMA — Light Mode Only
 # ------------------------------------------------------------
-D       = st.session_state.dark_mode
-BG      = '#0f0f1a'  if D else '#f5f7fa'
-BG2     = '#13132a'  if D else '#ffffff'
-BG3     = '#1a1a2e'  if D else '#eef2f7'
-BORDER  = '#2a2a4a'  if D else '#dde3ed'
-TEXT    = '#e0e0e0'  if D else '#1a1a2e'
-TEXT2   = '#aaaaaa'  if D else '#555555'
-TEXT3   = '#555555'  if D else '#999999'
+D       = False
+BG      = '#f5f7fa'
+BG2     = '#ffffff'
+BG3     = '#eef2f7'
+BORDER  = '#dde3ed'
+TEXT    = '#1a1a2e'
+TEXT2   = '#555555'
+TEXT3   = '#999999'
 ACCENT  = '#185FA5'
-ACCENT2 = '#60a5fa'  if D else '#185FA5'
+ACCENT2 = '#185FA5'
 GREEN   = '#0F6E56'
-GREEN2  = '#4ade80'  if D else '#0F6E56'
+GREEN2  = '#0F6E56'
 WARN    = '#d97706'
-WARN2   = '#fbbf24'  if D else '#d97706'
+WARN2   = '#d97706'
 RED     = '#991b1b'
-RED2    = '#f87171'  if D else '#dc2626'
-PLOTBG  = '#16213e'  if D else '#ffffff'
-PLOTFACE= '#1a1a2e'  if D else '#f5f7fa'
-GRID    = '#2a2a4a'  if D else '#e0e0e0'
-LEGBG   = '#13132a'  if D else '#ffffff'
+RED2    = '#dc2626'
+PLOTBG  = '#ffffff'
+PLOTFACE= '#f5f7fa'
+GRID    = '#e0e0e0'
+LEGBG   = '#ffffff'
 
 # ------------------------------------------------------------
 # CSS
@@ -94,6 +94,27 @@ div[data-testid="stDownloadButton"] > button {{
     color:white !important; border:none !important; border-radius:8px !important;
     font-weight:600 !important; font-size:13px !important;
     width:100% !important; padding:8px !important; }}
+
+/* ===== SEMBUNYIKAN TOMBOL COLLAPSE SIDEBAR TOTAL ===== */
+button[data-testid="baseButton-headerNoPadding"],
+[data-testid="collapsedControl"],
+button[aria-label="Close sidebar"],
+button[kind="headerNoPadding"],
+[data-testid="stSidebarCollapseButton"],
+section[data-testid="stSidebar"] > div > div > div > button {{
+    display: none !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    width: 0 !important;
+    height: 0 !important;
+    opacity: 0 !important;
+}}
+/* Paksa sidebar selalu tampil */
+section[data-testid="stSidebar"] {{
+    transform: none !important;
+    min-width: 244px !important;
+    width: 244px !important;
+}}
 </style>
 """, unsafe_allow_html=True)
 
@@ -225,7 +246,7 @@ def get_type_test_status(pred, kva, tipe):
         return (
             "✅  LULUS TYPE TEST",
             GREEN2,
-            '#0d3d2e' if D else '#e6f7ef',
+            '#e6f7ef',
             GREEN,
             tt, tol
         )
@@ -233,7 +254,7 @@ def get_type_test_status(pred, kva, tipe):
         return (
             "⚠️  DALAM TOLERANSI ±30%",
             WARN2,
-            '#3d2a00' if D else '#fffbeb',
+            '#fffbeb',
             WARN,
             tt, tol
         )
@@ -241,7 +262,7 @@ def get_type_test_status(pred, kva, tipe):
         return (
             "❌  TIDAK MEMENUHI STANDAR",
             RED2,
-            '#3d0d0d' if D else '#fdecea',
+            '#fdecea',
             RED,
             tt, tol
         )
@@ -250,14 +271,8 @@ def get_type_test_status(pred, kva, tipe):
 # SIDEBAR
 # ------------------------------------------------------------
 with st.sidebar:
-    cl, cr = st.columns([3, 1])
-    with cl:
-        st.markdown(f'<div style="font-size:15px;font-weight:700;color:{ACCENT2};">⚡ NLC Predictor</div>',
-                    unsafe_allow_html=True)
-    with cr:
-        if st.button("🌙" if D else "☀️", key="toggle_btn"):
-            st.session_state.dark_mode = not st.session_state.dark_mode
-            st.rerun()
+    st.markdown(f'<div style="font-size:15px;font-weight:700;color:{ACCENT2};">⚡ NLC Predictor</div>',
+                unsafe_allow_html=True)
 
     st.markdown(f'<div style="height:1px;background:{BORDER};margin:12px 0;"></div>', unsafe_allow_html=True)
     st.markdown(f'<div style="font-size:12px;font-weight:600;color:{TEXT2};margin-bottom:12px;">🔧 INPUT DATA TRAFO</div>',
@@ -284,7 +299,7 @@ with st.sidebar:
     if len(valid_tipe) == 1:
         st.markdown(
             f'<div style="font-size:10px;color:{WARN2};margin:-8px 0 8px;'
-            f'padding:4px 8px;background:{"#3d2a00" if D else "#fffbeb"};border-radius:6px;">'
+            f'padding:4px 8px;background:{"#fffbeb"};border-radius:6px;">'
             f'⚠️ {kapasitas} kVA hanya tersedia CRGO (kondisi nyata industri)</div>',
             unsafe_allow_html=True
         )
@@ -354,9 +369,9 @@ st.markdown(f"""
   </div>
   <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
     <span style="font-size:11px;padding:4px 14px;border-radius:20px;font-weight:600;
-        background:{'#0d2a4a' if D else '#e8f0fb'};color:{ACCENT2};border:1.5px solid {ACCENT};">CRGO</span>
+        background:{'#e8f0fb'};color:{ACCENT2};border:1.5px solid {ACCENT};">CRGO</span>
     <span style="font-size:11px;padding:4px 14px;border-radius:20px;font-weight:600;
-        background:{'#0d3d2e' if D else '#e6f7ef'};color:{GREEN2};border:1.5px solid {GREEN};">Amorphous</span>
+        background:{'#e6f7ef'};color:{GREEN2};border:1.5px solid {GREEN};">Amorphous</span>
   </div>
 </div>
 """, unsafe_allow_html=True)
@@ -388,17 +403,17 @@ st.markdown('<div style="margin-top:0.5rem;"></div>', unsafe_allow_html=True)
 # ------------------------------------------------------------
 st.markdown(f"""
 <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px;">
-  <span style="background:{'#0d3d2e' if D else '#e6f7ef'};color:{GREEN2};
+  <span style="background:{'#e6f7ef'};color:{GREEN2};
       border:1.5px solid {GREEN};border-radius:20px;padding:5px 14px;
       font-size:12px;font-weight:600;white-space:nowrap;">
     &#9989; NLC &#8804; Type Test &#8594; <b>LULUS</b>
   </span>
-  <span style="background:{'#3d2a00' if D else '#fffbeb'};color:{WARN2};
+  <span style="background:{'#fffbeb'};color:{WARN2};
       border:1.5px solid {WARN};border-radius:20px;padding:5px 14px;
       font-size:12px;font-weight:600;white-space:nowrap;">
     &#9888;&#65039; Type Test &lt; NLC &#8804; +30% &#8594; <b>TOLERANSI</b>
   </span>
-  <span style="background:{'#3d0d0d' if D else '#fdecea'};color:{RED2};
+  <span style="background:{'#fdecea'};color:{RED2};
       border:1.5px solid {RED};border-radius:20px;padding:5px 14px;
       font-size:12px;font-weight:600;white-space:nowrap;">
     &#10060; NLC &gt; +30% &#8594; <b>TIDAK MEMENUHI</b>
@@ -432,7 +447,7 @@ with tab1:
 
             # Nilai prediksi utama
             st.markdown(f"""
-            <div style="background:{'#0d2a4a' if D else '#e8f0fb'};border:2px solid {ACCENT};
+            <div style="background:{'#e8f0fb'};border:2px solid {ACCENT};
                 border-radius:14px;padding:28px;text-align:center;margin:14px 0;">
                 <div style="font-size:12px;color:{TEXT2};">Prediksi No Load Current</div>
                 <div style="font-size:56px;font-weight:800;color:{ACCENT2};line-height:1.1;margin:8px 0;">{hasil:.6f}</div>
