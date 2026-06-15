@@ -318,8 +318,8 @@ with st.sidebar:
         st.markdown(f'<div style="font-size:11px;color:{TEXT3};margin:4px 0;">'
                     f'Referensi NL Loss: <b style="color:{ACCENT2};">~{ref_loss} W</b></div>',
                     unsafe_allow_html=True)
-        nl_loss = st.number_input("No Load Loss (W)", min_value=10, max_value=800,
-                                  value=st.session_state.nl_loss, step=1, key="loss_input")
+        nl_loss = st.number_input("No Load Loss (W)", min_value=10.0, max_value=800.0,
+                                  value=float(st.session_state.nl_loss), step=0.001, format="%.3f", key="loss_input")
         st.session_state.nl_loss = nl_loss
         st.markdown(f'<div style="font-size:11px;color:{TEXT3};margin:4px 0;">'
                     f'Type Test Standar: <b style="color:{ACCENT2};">{tt_val:.4f} %</b>'
@@ -364,8 +364,8 @@ with st.sidebar:
                     f'Referensi NL Loss: <b style="color:{ACCENT2};">~{ref_loss_1f} W</b></div>',
                     unsafe_allow_html=True)
 
-        nl_loss_1f = st.number_input("No Load Loss (W)", min_value=50, max_value=250,
-                                     value=st.session_state.nl_loss_1f, step=1, key="loss_1f")
+        nl_loss_1f = st.number_input("No Load Loss (W)", min_value=50.0, max_value=250.0,
+                                     value=float(st.session_state.nl_loss_1f), step=0.001, format="%.3f", key="loss_1f")
         st.session_state.nl_loss_1f = nl_loss_1f
         st.markdown(f'<div style="font-size:11px;color:{TEXT3};margin:4px 0;">'
                     f'Type Test Standar: <b style="color:{ACCENT2};">{tt_val_1f:.4f} %</b>'
@@ -592,7 +592,7 @@ if mode_now == '3 Fasa':
             with cb:
                 valid_n=TIPE_PER_KVA_3F[new_kva]
                 new_tipe=st.selectbox("Tipe Inti",valid_n,key="new_ti_3f")
-            with cc: new_loss=st.number_input("NL Loss (W)",10,800,LOSS_REF_3F[new_kva][new_tipe],key="new_loss_3f")
+            with cc: new_loss=st.number_input("NL Loss (W)",10.0,800.0,float(LOSS_REF_3F[new_kva][new_tipe]),step=0.001,format="%.3f",key="new_loss_3f")
             with cd:
                 st.markdown('<div style="margin-top:24px;"></div>',unsafe_allow_html=True)
                 if st.button("➕ Tambah",key="add_3f"):
@@ -814,7 +814,7 @@ else:
         with man_tab_1f:
             ca_1f,cb_1f,cc_1f=st.columns([2,3,1])
             with ca_1f: new_tipe_1f=st.selectbox("Tipe Inti",TIPE_1F,key="new_ti_1f")
-            with cb_1f: new_loss_1f=st.number_input("NL Loss (W)",50,250,LOSS_REF_1F[new_tipe_1f],key="new_loss_1f")
+            with cb_1f: new_loss_1f=st.number_input("NL Loss (W)",50.0,250.0,float(LOSS_REF_1F[new_tipe_1f]),step=0.001,format="%.3f",key="new_loss_1f")
             with cc_1f:
                 st.markdown('<div style="margin-top:24px;"></div>',unsafe_allow_html=True)
                 if st.button("➕",key="add_1f"):
