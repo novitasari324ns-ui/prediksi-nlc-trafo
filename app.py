@@ -1,5 +1,5 @@
 # ============================================================
-#  PREDIKSI NO LOAD CURRENT TRAFO DISTRIBUSI
+#  PEMODELAN NO-LOAD CURRENT (%) TRANSFORMATOR DISTRIBUSI
 #  PT Bambang Djaja — Random Forest
 #  v4.0 — 3 Fasa + 1 Fasa dalam satu aplikasi
 # ============================================================
@@ -16,7 +16,7 @@ from sklearn.preprocessing   import LabelEncoder
 from sklearn.metrics         import r2_score, mean_squared_error, mean_absolute_error
 
 st.set_page_config(
-    page_title="Prediksi NLC Trafo — PT Bambang Djaja",
+    page_title="Model NLC Transformator — PT Bambang Djaja",
     page_icon="⚡", layout="wide", initial_sidebar_state="expanded"
 )
 
@@ -217,7 +217,7 @@ def render_pred_result(pred, tt, nl_loss, ref_loss, tipe, label_extra=""):
     st.markdown(f"""
     <div style="background:#e8f0fb;border:2px solid {ACCENT};
         border-radius:14px;padding:28px;text-align:center;margin:14px 0;">
-        <div style="font-size:12px;color:{TEXT2};">Prediksi No Load Current {label_extra}</div>
+        <div style="font-size:12px;color:{TEXT2};">Estimasi No-Load Current {label_extra}</div>
         <div style="font-size:52px;font-weight:800;color:{ACCENT2};line-height:1.1;margin:8px 0;">{pred:.6f}</div>
         <div style="font-size:16px;color:{TEXT2};">%</div>
         <div style="font-size:11px;color:{TEXT3};margin-top:8px;">
@@ -272,7 +272,7 @@ r2_1, rmse_1, mae_1, acc_1, Xte_1, yte_1, ype_1 = get_metrics_1f()
 
 # ── SIDEBAR ───────────────────────────────────────────────────
 with st.sidebar:
-    st.markdown(f'<div style="font-size:15px;font-weight:700;color:{ACCENT2};">⚡ NLC Predictor — PT Bambang Djaja</div>',
+    st.markdown(f'<div style="font-size:15px;font-weight:700;color:{ACCENT2};">⚡ Model NLC — PT Bambang Djaja</div>',
                 unsafe_allow_html=True)
     st.markdown(f'<div style="height:1px;background:{BORDER};margin:12px 0;"></div>', unsafe_allow_html=True)
 
@@ -327,7 +327,7 @@ with st.sidebar:
                     unsafe_allow_html=True)
         st.markdown(f'<div style="height:1px;background:{BORDER};margin:12px 0 16px;"></div>', unsafe_allow_html=True)
 
-        prediksi_btn = st.button("⚡ Prediksi NLC%", use_container_width=True, key="pred_btn_3f")
+        prediksi_btn = st.button("⚡ Estimasi NLC (%)", use_container_width=True, key="pred_btn_3f")
         if st.button("🔄 Reset Input", use_container_width=True, key="reset_btn_3f"):
             st.session_state.kapasitas=100; st.session_state.tipe_inti='CRGO'
             st.session_state.nl_loss=129; st.session_state.hasil_pred=None; st.rerun()
@@ -373,7 +373,7 @@ with st.sidebar:
                     unsafe_allow_html=True)
         st.markdown(f'<div style="height:1px;background:{BORDER};margin:12px 0 16px;"></div>', unsafe_allow_html=True)
 
-        prediksi_btn_1f = st.button("⚡ Prediksi NLC%", use_container_width=True, key="pred_btn_1f")
+        prediksi_btn_1f = st.button("⚡ Estimasi NLC (%)", use_container_width=True, key="pred_btn_1f")
         if st.button("🔄 Reset Input", use_container_width=True, key="reset_btn_1f"):
             st.session_state.tipe_1f='CRGO'; st.session_state.nl_loss_1f=113
             st.session_state.hasil_pred_1f=None; st.rerun()
@@ -402,7 +402,7 @@ st.markdown(f"""
     display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
   <div>
     <div style="font-size:16px;font-weight:700;color:{TEXT};">
-      ⚡ Prediksi No Load Current Trafo Distribusi — {mode_now}</div>
+      ⚡ Pemodelan No-Load Current (%) Transformator Distribusi — {mode_now}</div>
     <div style="font-size:11px;color:{TEXT2};margin-top:3px;">PT Bambang Djaja · Random Forest · {desc}</div>
   </div>
   <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
@@ -460,9 +460,9 @@ st.markdown(f"""
 #  MODE: 3 FASA
 # ══════════════════════════════════════════════════════════════
 if mode_now == '3 Fasa':
-    tab1, tab2, tab3, tab4 = st.tabs(["🎯 Prediksi", "📦 Batch Prediksi", "📊 Evaluasi Model", "📋 Data"])
+    tab1, tab2, tab3, tab4 = st.tabs(["🎯 Estimasi", "📦 Batch Estimasi", "📊 Evaluasi Model", "📋 Data"])
 
-    # ── TAB 1: PREDIKSI TUNGGAL ──
+    # ── TAB 1: ESTIMASI TUNGGAL ──
     with tab1:
         col1, col2 = st.columns([1,1], gap="large")
         with col1:
@@ -481,7 +481,7 @@ if mode_now == '3 Fasa':
                     <div style="font-size:52px;">⚡</div>
                     <div style="font-size:13px;margin-top:10px;">
                         Isi input di sidebar lalu klik<br>
-                        <b style="color:{ACCENT2};">Prediksi NLC%</b>
+                        <b style="color:{ACCENT2};">Estimasi NLC (%)</b>
                     </div>
                 </div>""", unsafe_allow_html=True)
 
@@ -527,7 +527,7 @@ if mode_now == '3 Fasa':
 
     # ── TAB 2: BATCH ──
     with tab2:
-        sec("Batch Prediksi","📦")
+        sec("Batch Estimasi","📦")
 
         def run_batch_3f(df_in):
             results=[]
@@ -538,7 +538,7 @@ if mode_now == '3 Fasa':
                 ref_l=LOSS_REF_3F[kva][tipe]; dev=(loss-ref_l)/ref_l*100
                 status="✅ LULUS TYPE TEST" if pred<=tt else ("⚠️ DALAM TOLERANSI ±30%" if pred<=tol else "❌ TIDAK MEMENUHI STANDAR")
                 results.append({'kapasitas':kva,'tipe_inti':tipe,'nl_loss':loss,
-                    'nlc_prediksi_%':round(pred,6),'type_test_%':tt,
+                    'nlc_estimasi_%':round(pred,6),'type_test_%':tt,
                     'toleransi_+30%':round(tol,4),'status':status,'deviasi_loss_%':round(dev,2)})
             return pd.DataFrame(results)
 
@@ -572,7 +572,7 @@ if mode_now == '3 Fasa':
                         if len(df_valid):
                             st.success(f"✅ {len(df_valid)} baris valid")
                             st.dataframe(df_valid.head(10),use_container_width=True)
-                            if st.button("⚡ Prediksi dari CSV",key="pred_csv_3f"):
+                            if st.button("⚡ Estimasi dari CSV",key="pred_csv_3f"):
                                 df_res=run_batch_3f(df_valid)
                                 show_batch_summary(df_res)
                                 st.dataframe(df_res,use_container_width=True)
@@ -603,7 +603,7 @@ if mode_now == '3 Fasa':
                 st.dataframe(df_m,use_container_width=True,height=180)
                 cp,cc2=st.columns(2)
                 with cp:
-                    if st.button("⚡ Prediksi Semua",key="pred_man_3f"):
+                    if st.button("⚡ Estimasi Semua",key="pred_man_3f"):
                         st.session_state.batch_results=run_batch_3f(df_m)
                 with cc2:
                     if st.button("🗑️ Hapus Semua",key="clear_3f"):
@@ -627,15 +627,15 @@ if mode_now == '3 Fasa':
 
         col1,col2=st.columns(2,gap="large")
         with col1:
-            sec("Aktual vs Prediksi")
+            sec("Aktual vs Estimasi")
             fig,ax=plt.subplots(figsize=(5.5,4.5))
             for tipe,color in [('CRGO','#185FA5'),('Amorphous','#0F6E56')]:
                 idx=[i for i,x in enumerate(Xte_3) if le3.classes_[int(round(x[1]))]==tipe]
                 ax.scatter([yte_3[i] for i in idx],[ype_3[i] for i in idx],c=color,label=tipe,alpha=0.7,s=45,edgecolors='none',zorder=3)
             mn=min(yte_3.min(),ype_3.min()); mx=max(yte_3.max(),ype_3.max())
             ax.plot([mn,mx],[mn,mx],'r--',linewidth=1.5,alpha=0.6,label='Ideal')
-            ax.set_xlabel('Aktual NLC (%)'); ax.set_ylabel('Prediksi NLC (%)')
-            ax.set_title(f'Aktual vs Prediksi  (R² = {r2_3:.4f})')
+            ax.set_xlabel('Aktual NLC (%)'); ax.set_ylabel('Estimasi NLC (%)')
+            ax.set_title(f'Aktual vs Estimasi  (R² = {r2_3:.4f})')
             ax.legend(fontsize=9); ax.grid(True,alpha=0.3,zorder=0)
             plt.tight_layout(); st.pyplot(fig); plt.close()
         with col2:
@@ -653,7 +653,7 @@ if mode_now == '3 Fasa':
             ax.set_title('Feature Importance'); ax.grid(True,alpha=0.3,axis='x',zorder=0)
             plt.tight_layout(); st.pyplot(fig); plt.close()
 
-        sec("Distribusi Error Prediksi")
+        sec("Distribusi Residual Estimasi")
         fig,ax=plt.subplots(figsize=(11,3.2))
         errors=ype_3-yte_3
         ax.hist(errors,bins=25,color='#185FA5',alpha=0.8,edgecolor='none',zorder=3)
@@ -703,9 +703,9 @@ if mode_now == '3 Fasa':
 #  MODE: 1 FASA
 # ══════════════════════════════════════════════════════════════
 else:
-    tab1, tab2, tab3, tab4 = st.tabs(["🎯 Prediksi", "📦 Batch Prediksi", "📊 Evaluasi Model", "📋 Data"])
+    tab1, tab2, tab3, tab4 = st.tabs(["🎯 Estimasi", "📦 Batch Estimasi", "📊 Evaluasi Model", "📋 Data"])
 
-    # ── TAB 1: PREDIKSI TUNGGAL 1F ──
+    # ── TAB 1: ESTIMASI TUNGGAL 1F ──
     with tab1:
         col1,col2=st.columns([1,1],gap="large")
         with col1:
@@ -724,7 +724,7 @@ else:
                     <div style="font-size:52px;">⚡</div>
                     <div style="font-size:13px;margin-top:10px;">
                         Pilih tipe inti & NL Loss di sidebar<br>lalu klik
-                        <b style="color:{ACCENT2};">Prediksi NLC%</b>
+                        <b style="color:{ACCENT2};">Estimasi NLC (%)</b>
                     </div>
                 </div>""", unsafe_allow_html=True)
 
@@ -757,7 +757,7 @@ else:
 
     # ── TAB 2: BATCH 1F ──
     with tab2:
-        sec("Batch Prediksi — 1 Fasa","📦")
+        sec("Batch Estimasi — 1 Fasa","📦")
 
         def run_batch_1f(df_in):
             results=[]
@@ -767,7 +767,7 @@ else:
                 tt=TYPE_TEST_1F[tipe]; tol=tt*1.30
                 ref_l=LOSS_REF_1F[tipe]; dev=(loss-ref_l)/ref_l*100
                 status="✅ LULUS TYPE TEST" if pred<=tt else ("⚠️ DALAM TOLERANSI ±30%" if pred<=tol else "❌ TIDAK MEMENUHI STANDAR")
-                results.append({'tipe_inti':tipe,'nl_loss':loss,'nlc_prediksi_%':round(pred,6),
+                results.append({'tipe_inti':tipe,'nl_loss':loss,'nlc_estimasi_%':round(pred,6),
                     'type_test_%':tt,'toleransi_+30%':round(tol,4),'status':status,'deviasi_loss_%':round(dev,2)})
             return pd.DataFrame(results)
 
@@ -798,7 +798,7 @@ else:
                         if len(df_valid_1f):
                             st.success(f"✅ {len(df_valid_1f)} baris valid")
                             st.dataframe(df_valid_1f.head(10),use_container_width=True)
-                            if st.button("⚡ Prediksi dari CSV",key="pred_csv_1f"):
+                            if st.button("⚡ Estimasi dari CSV",key="pred_csv_1f"):
                                 df_res_1f=run_batch_1f(df_valid_1f)
                                 show_batch_summary_1f(df_res_1f)
                                 st.dataframe(df_res_1f,use_container_width=True)
@@ -825,7 +825,7 @@ else:
                 st.dataframe(df_m_1f,use_container_width=True,height=180)
                 cp1f,cc_1f2=st.columns(2)
                 with cp1f:
-                    if st.button("⚡ Prediksi Semua",key="pred_man_1f"):
+                    if st.button("⚡ Estimasi Semua",key="pred_man_1f"):
                         st.session_state.batch_results_1f=run_batch_1f(df_m_1f)
                 with cc_1f2:
                     if st.button("🗑️ Hapus Semua",key="clear_1f"):
@@ -849,15 +849,15 @@ else:
 
         col1,col2=st.columns(2,gap="large")
         with col1:
-            sec("Aktual vs Prediksi")
+            sec("Aktual vs Estimasi")
             fig,ax=plt.subplots(figsize=(5.5,4.5))
             for tipe,color in [('CRGO','#185FA5'),('Amorphous','#0F6E56')]:
                 idx=[i for i,x in enumerate(Xte_1) if le1.classes_[int(round(x[1]))]==tipe]
                 ax.scatter([yte_1[i] for i in idx],[ype_1[i] for i in idx],c=color,label=tipe,alpha=0.7,s=45,edgecolors='none',zorder=3)
             mn=min(yte_1.min(),ype_1.min()); mx=max(yte_1.max(),ype_1.max())
             ax.plot([mn,mx],[mn,mx],'r--',linewidth=1.5,alpha=0.6,label='Ideal')
-            ax.set_xlabel('Aktual NLC (%)'); ax.set_ylabel('Prediksi NLC (%)')
-            ax.set_title(f'Aktual vs Prediksi  (R² = {r2_1:.4f})')
+            ax.set_xlabel('Aktual NLC (%)'); ax.set_ylabel('Estimasi NLC (%)')
+            ax.set_title(f'Aktual vs Estimasi  (R² = {r2_1:.4f})')
             ax.legend(fontsize=9); ax.grid(True,alpha=0.3,zorder=0)
             plt.tight_layout(); st.pyplot(fig); plt.close()
 
@@ -876,7 +876,7 @@ else:
             ax.legend(fontsize=9); ax.grid(True,alpha=0.3,zorder=0)
             plt.tight_layout(); st.pyplot(fig); plt.close()
 
-        sec("Distribusi Error Prediksi")
+        sec("Distribusi Residual Estimasi")
         fig,ax=plt.subplots(figsize=(11,3.2))
         errors_1=ype_1-yte_1
         ax.hist(errors_1,bins=20,color='#185FA5',alpha=0.8,edgecolor='none',zorder=3)
@@ -925,7 +925,7 @@ else:
 st.markdown(
     f'<div style="text-align:center;color:{TEXT3};font-size:11px;margin-top:2rem;'
     f'padding:12px;border-top:1px solid {BORDER};">'
-    f'Prediksi No Load Current Trafo · PT Bambang Djaja · Random Forest · v4.0 · '
+    f'Pemodelan No-Load Current (%) Transformator Distribusi · PT Bambang Djaja · Random Forest · v4.0 · '
     f'3 Fasa (431 unit) + 1 Fasa (96 unit)</div>',
     unsafe_allow_html=True
 )

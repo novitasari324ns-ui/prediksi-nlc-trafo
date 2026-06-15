@@ -1,5 +1,5 @@
 # ============================================================
-#  PREDIKSI NO LOAD CURRENT TRAFO DISTRIBUSI 3 FASA
+#  PEMODELAN NO-LOAD CURRENT (%) TRANSFORMATOR DISTRIBUSI 3 FASA
 #  PT Bambang Djaja — Random Forest
 #  Input  : kapasitas (kVA), tipe inti, nl_loss (W)
 #  Output : nlc_persen (%)
@@ -23,7 +23,7 @@ LE_PATH    = os.path.join(MODEL_DIR,'label_encoder.pkl')
 os.makedirs(MODEL_DIR, exist_ok=True)
 
 print("="*60)
-print("  PREDIKSI NO LOAD CURRENT — PT BAMBANG DJAJA")
+print("  PEMODELAN NO-LOAD CURRENT (%) — PT BAMBANG DJAJA")
 print("="*60)
 
 # 1. LOAD DATA
@@ -96,11 +96,11 @@ print(f"    {LE_PATH} ✅")
 # 7. VISUALISASI
 print("\n[7] Membuat grafik...")
 fig,axes=plt.subplots(2,2,figsize=(14,10))
-fig.suptitle('Prediksi No Load Current Trafo — PT Bambang Djaja\nRandom Forest · Data Asli 431 Unit · 6 Kapasitas',
+fig.suptitle('Pemodelan No-Load Current (%) Transformator Distribusi — PT Bambang Djaja\nRandom Forest · Data Asli 431 Unit · 6 Kapasitas',
              fontsize=13,fontweight='bold')
 
 r2_te = r2_score(y_test,yp_te)
-# Plot 1: Aktual vs Prediksi
+# Plot 1: Aktual vs Estimasi
 ax1=axes[0,0]
 colors_map={'CRGO':'#185FA5','Amorphous':'#0F6E56'}
 for tipe in ['CRGO','Amorphous']:
@@ -110,8 +110,8 @@ for tipe in ['CRGO','Amorphous']:
                     c=colors_map[tipe],label=tipe,alpha=0.6,s=30,edgecolors='none')
 mn,mx=min(y_test.min(),yp_te.min()),max(y_test.max(),yp_te.max())
 ax1.plot([mn,mx],[mn,mx],'r--',linewidth=1.5,alpha=0.6,label='Ideal')
-ax1.set_xlabel('Aktual NLC (%)'); ax1.set_ylabel('Prediksi NLC (%)')
-ax1.set_title(f'Aktual vs Prediksi  (R²={r2_te:.4f})')
+ax1.set_xlabel('Aktual NLC (%)'); ax1.set_ylabel('Estimasi NLC (%)')
+ax1.set_title(f'Aktual vs Estimasi  (R²={r2_te:.4f})')
 ax1.legend(fontsize=9); ax1.grid(True,alpha=0.3)
 
 # Plot 2: Feature Importance
@@ -151,7 +151,7 @@ ax4.hist(errors,bins=25,color='#185FA5',alpha=0.75,edgecolor='white',linewidth=0
 ax4.axvline(0,color='red',linestyle='--',linewidth=1.5,label='Error=0')
 ax4.axvline(errors.mean(),color='orange',linestyle='-',linewidth=1.5,label=f'Mean={errors.mean():.6f}')
 ax4.set_xlabel('Error (%)'); ax4.set_ylabel('Jumlah unit')
-ax4.set_title('Distribusi Error Prediksi')
+ax4.set_title('Distribusi Residual Estimasi')
 ax4.legend(fontsize=9); ax4.grid(True,alpha=0.3)
 
 plt.tight_layout()
@@ -159,9 +159,9 @@ plt.savefig('hasil_evaluasi.png',dpi=150,bbox_inches='tight')
 plt.show()
 print("    hasil_evaluasi.png ✅")
 
-# 8. CONTOH PREDIKSI
-print("\n[8] Contoh prediksi unit baru:")
-print(f"    {'kVA':<6} {'Tipe Inti':<12} {'NL Loss':>10}  {'Prediksi NLC%':>14}")
+# 8. CONTOH ESTIMASI
+print("\n[8] Contoh estimasi unit baru:")
+print(f"    {'kVA':<6} {'Tipe Inti':<12} {'NL Loss':>10}  {'Estimasi NLC%':>14}")
 print(f"    {'-'*50}")
 contoh=[(50,'Amorphous',38),(50,'CRGO',84),(100,'Amorphous',35),(100,'CRGO',129),
         (160,'Amorphous',78),(160,'CRGO',183),(250,'CRGO',295),(400,'CRGO',393),(630,'CRGO',553)]
