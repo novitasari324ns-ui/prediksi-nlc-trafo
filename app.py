@@ -16,7 +16,7 @@ from sklearn.preprocessing   import LabelEncoder
 from sklearn.metrics         import r2_score, mean_squared_error, mean_absolute_error
 
 st.set_page_config(
-    page_title="Model NLC Transformator — PT Bambang Djaja",
+    page_title="Prediksi NLC Transformator — PT Bambang Djaja",
     page_icon="⚡", layout="wide", initial_sidebar_state="expanded"
 )
 
@@ -272,7 +272,7 @@ r2_1, rmse_1, mae_1, acc_1, Xte_1, yte_1, ype_1 = get_metrics_1f()
 
 # ── SIDEBAR ───────────────────────────────────────────────────
 with st.sidebar:
-    st.markdown(f'<div style="font-size:15px;font-weight:700;color:{ACCENT2};">⚡ Model NLC — PT Bambang Djaja</div>',
+    st.markdown(f'<div style="font-size:15px;font-weight:700;color:{ACCENT2};">⚡ Prediksi NLC — PT Bambang Djaja</div>',
                 unsafe_allow_html=True)
     st.markdown(f'<div style="height:1px;background:{BORDER};margin:12px 0;"></div>', unsafe_allow_html=True)
 
@@ -402,7 +402,7 @@ st.markdown(f"""
     display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
   <div>
     <div style="font-size:16px;font-weight:700;color:{TEXT};">
-      ⚡ Pemodelan No-Load Current (%) Transformator Distribusi — {mode_now}</div>
+      ⚡ Prediksi No-Load Current (%) Transformator Distribusi — {mode_now}</div>
     <div style="font-size:11px;color:{TEXT2};margin-top:3px;">PT Bambang Djaja · Random Forest · {desc}</div>
   </div>
   <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">
@@ -925,7 +925,7 @@ else:
 st.markdown(
     f'<div style="text-align:center;color:{TEXT3};font-size:11px;margin-top:2rem;'
     f'padding:12px;border-top:1px solid {BORDER};">'
-    f'Pemodelan No-Load Current (%) Transformator Distribusi · PT Bambang Djaja · Random Forest · v4.0 · '
+    f'Prediksi No-Load Current (%) Transformator Distribusi · PT Bambang Djaja · Random Forest · v4.0 · '
     f'3 Fasa (431 unit) + 1 Fasa (96 unit)</div>',
     unsafe_allow_html=True
 )
